@@ -6,7 +6,7 @@ from contextlib import contextmanager
 env_path = Path(__file__).parent / '.env'
 config = dotenv_values(env_path)
 db_url = config['DB_ADMIN']
-engine = create_engine(db_url, echo=True)
+engine = create_engine(db_url)
 
 
 def init_db():

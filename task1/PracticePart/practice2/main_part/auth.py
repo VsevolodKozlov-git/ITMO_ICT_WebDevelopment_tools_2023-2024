@@ -14,7 +14,7 @@ config = dotenv_values(env_path)
 # jwt setup
 SECRET_KEY = config['JWT_SECRET_KEY']
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 800
+ACCESS_TOKEN_EXPIRE_MINUTES = 800000
 # hasher setup
 crypto_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 # auth scheme setup
@@ -60,3 +60,6 @@ def get_user_by_token(token):
     token_data = decode_token(token)
     username = token_data['sub']
     return db_queries.get_user_by_username(username)
+
+# user1
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk5MTUxMTcsImlhdCI6MTcxMTkxNTExNywic3ViIjoidXNlcjEifQ.CdzMds38zLe9hw3EBuwxAGUT2FvoRbdTDVSE-tnW0aQ

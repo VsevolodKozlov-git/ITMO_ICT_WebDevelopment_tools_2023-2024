@@ -1,6 +1,9 @@
 import models
 from db import get_session_func
 import sqlmodel
+import typing as tp
+
+
 
 
 def get_user_by_username(username: str) -> models.User:
@@ -12,3 +15,20 @@ def get_user_by_username(username: str) -> models.User:
     if user is None:
         raise ValueError('no user with such username')
     return user
+
+
+
+# def get_project_calendar_entries(
+#
+# )
+
+# def get_category_calendar_entries(
+#         session: sqlmodel.Session,
+#         category_id:int
+# ) -> tp.List[models.CalendarEntry]:
+#
+# def get_task_calendar_entries(
+#         session: sqlmodel.Session,
+#         task_id:int
+# ) -> tp.List[models.CalendarEntry]:
+#     pass
