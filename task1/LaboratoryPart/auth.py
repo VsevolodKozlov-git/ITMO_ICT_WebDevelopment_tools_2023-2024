@@ -1,9 +1,11 @@
 from passlib.context import CryptContext
-from jose import JWTError, jwt
+from jose import jwt
+from jose.exceptions import JWTError
 from pathlib import Path
 from dotenv import dotenv_values
 import datetime
 from fastapi import Depends
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 import db_queries
@@ -45,12 +47,22 @@ def generate_token(username):
 
 
 def decode_token(token):
-    return jwt.decode(
-        token,
-        SECRET_KEY,
-        ALGORITHM
-    )
-
+    try: 
+        
+        decoded_token = jwt.decode(
+            token,
+            SECRET_KEY,
+            ALGORITHM
+        )
+    except JWTError:
+        raise HTTPException(
+            status_code=403,
+            detail='Invalid token. Invalid format'
+        )
+    return decoded_token
+"""
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk5MTUxMTcsImlhdCI6MTcxMTkxNTExNywic3ViIjoidXNlcjEifQ.CdzMds38zLe9hw3EBuwxAGUT2FvoRbdTDVSE-tnW0aQ
+"""
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     return get_user_by_token(token)
@@ -59,7 +71,11 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 def get_user_by_token(token):
     token_data = decode_token(token)
     username = token_data['sub']
-    return db_queries.get_user_by_username(username)
-
-# user1
-# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk5MTUxMTcsImlhdCI6MTcxMTkxNTExNywic3ViIjoidXNlcjEifQ.CdzMds38zLe9hw3EBuwxAGUT2FvoRbdTDVSE-tnW0aQ
+    try: 
+        user = db_queries.get_user_by_username(username)
+    except ValueError:
+        raise HTTPException(
+            status_code=403,
+            detail='Invalid token. No such user'
+        )
+    return user

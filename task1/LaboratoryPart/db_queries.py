@@ -1,9 +1,6 @@
 import models
 from db import get_session_func
 import sqlmodel
-import typing as tp
-
-
 
 
 def get_user_by_username(username: str) -> models.User:

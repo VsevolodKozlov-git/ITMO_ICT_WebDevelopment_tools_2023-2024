@@ -41,7 +41,7 @@ class ProjectValidator:
     def is_admin_or_exception(self):
         statement = select(models.ProjectUserLink) \
             .where(models.ProjectUserLink.user_id == self._user_id) \
-            .where(models.ProjectUserLink.user_id == self._project.id)
+            .where(models.ProjectUserLink.project_id == self._project.id)
         user_entries: tp.List[models.ProjectUserLink] = list(
             self._session.exec(statement).all()
         )

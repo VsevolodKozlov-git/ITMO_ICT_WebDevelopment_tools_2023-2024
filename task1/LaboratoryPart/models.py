@@ -1,4 +1,3 @@
-
 from sqlmodel import SQLModel,Field, select, Relationship
 import pydantic
 from db import get_session_func
@@ -27,15 +26,15 @@ class Priority(Enum):
 
 
 class ProjectUserLink(SQLModel, table=True):
+    """Модель БД, которая связывает project и user"""
     id: int = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key='user.id')
-    user: 'User' = Relationship()
     project_id: int = Field(foreign_key='project.id')
-    project: 'Project' = Relationship()
     role: Role
 
 
 class UserInProjectForm(SQLModel):
+    """Модель, чтобы передать её в создание пользователя"""
     user_id: int
     role: Role
 
@@ -124,9 +123,9 @@ class CategoryWithEntries(CategoryBase):
 class TaskBase(SQLModel):
     title: str
     description: Optional[str]
-    deadline: Optional[int]
-    priority: Priority
-    approximate_time: datetime.time
+    deadline: Optional[datetime.date]
+    priority: Optional[Priority]
+    approximate_time: Optional[int]
 
 
 class Task(TaskBase, table=True):

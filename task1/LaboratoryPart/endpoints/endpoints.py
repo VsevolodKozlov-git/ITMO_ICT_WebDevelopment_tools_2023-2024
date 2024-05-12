@@ -1,9 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException
-import models
 from sqlmodel import Session, select
 from db import init_db, get_session_depends
+import models
 import db_queries
-from pydantic import ValidationError
 import auth
 from enum import Enum
 import typing as tp
@@ -61,7 +60,7 @@ def get_user_by_id(
 
 @app.get('/user/', status_code=200, tags=[Tags.user])
 def get_current_user(
-        user_db:models.User = Depends(auth.get_current_user)
+        user_db: models.User = Depends(auth.get_current_user)
 ) -> models.UserGet:
     user_get = models.UserGet.model_validate(user_db)
     return user_get
@@ -144,7 +143,7 @@ def create_project(
         project: models.ProjectBase,
         user_db: models.User = Depends(auth.get_current_user),
         session: Session = Depends(get_session_depends)
-) -> tp.TypedDict('post_project', {'msg': str}):
+) -> tp.TypedDict('post_project', {'msg': str, 'object': models.Project}):
     project = models.Project.model_validate(project)
     tools.add_object_to_db_and_refresh(session, project)
     # add creator as project admin
@@ -154,7 +153,7 @@ def create_project(
         role=models.Role.admin
     )
     tools.add_object_to_db_and_refresh(session, link)
-    return {'msg': 'Created'}
+    return {'msg': 'Created', 'object': models.Project.model_validate(project)}
 
 
 @app.get('/project/{project_id}/user/', status_code=200, tags=[Tags.project])
