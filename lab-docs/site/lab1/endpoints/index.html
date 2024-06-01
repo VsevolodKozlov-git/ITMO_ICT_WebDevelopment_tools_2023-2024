@@ -1,9 +1,122 @@
-# Endpoints
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Endpoints - Kozlov-docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Endpoints";
+        var mkdocs_page_input_path = "lab1\\endpoints.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
 
-## Дополнительные инструменты для работы с конечными точками
+<body class="wy-body-for-nav" role="document">
 
-```python
-from fastapi import HTTPException
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Kozlov-docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Лабораторная работа 1</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../main/">backend для планера задач на fastAPI</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Код</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../practice/">Практика</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../models/">Модели</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../db/">Соединение с БД</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Endpoints</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Дополнительные инструменты для работы с конечными точками</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Конечные точки</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../auth/">Аутентификация</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Лабораторная работа 2</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Задание1</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task1/">Задание 1</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab2/main/">Асинхронный парсер notion API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Код</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_auxilary/">Вспомогательные модули</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_threading/">Task2 threading</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_multiprocessing/">Реализация через multiprocessing</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_asyncio/">Реализация через AsyncIO</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_conclusion/">Выводы</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kozlov-docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Лабораторная работа 1</li>
+          <li class="breadcrumb-item">Код</li>
+      <li class="breadcrumb-item active">Endpoints</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="endpoints">Endpoints</h1>
+<h2 id="_1">Дополнительные инструменты для работы с конечными точками</h2>
+<pre><code class="language-python">from fastapi import HTTPException
 import models
 from sqlmodel import Session, select, SQLModel
 import typing as tp
@@ -26,15 +139,15 @@ class ProjectValidator:
 
 
     @property
-    def object(self) -> models.Project:
+    def object(self) -&gt; models.Project:
         if self._object is None:
             self._object = self._retrieve_object_or_exception()
         return self._object
 
-    def _retrieve_project(self) -> models.Project:
+    def _retrieve_project(self) -&gt; models.Project:
         return self.object
 
-    def _retrieve_object_or_exception(self) -> models.Project:
+    def _retrieve_object_or_exception(self) -&gt; models.Project:
         project = self._session.get(models.Project, self._object_id)
         if project is None:
             raise HTTPException(
@@ -72,10 +185,10 @@ class ProjectValidator:
 
 class CategoryValidator(ProjectValidator):
 
-    def _retrieve_project(self) -> models.Project:
+    def _retrieve_project(self) -&gt; models.Project:
         return self.object.project
 
-    def _retrieve_object_or_exception(self) -> models.Category:
+    def _retrieve_object_or_exception(self) -&gt; models.Category:
         category = self._session.get(models.Category, self._object_id)
         if category is None:
             raise HTTPException(
@@ -86,10 +199,10 @@ class CategoryValidator(ProjectValidator):
 
 
 class TaskValidator(CategoryValidator):
-    def _retrieve_project(self) -> models.Project:
+    def _retrieve_project(self) -&gt; models.Project:
         return self.object.category.project
 
-    def _retrieve_object_or_exception(self) -> models.Task:
+    def _retrieve_object_or_exception(self) -&gt; models.Task:
         task = self._session.get(models.Task, self._object_id)
         if task is None:
             raise HTTPException(
@@ -98,11 +211,9 @@ class TaskValidator(CategoryValidator):
             )
         return task
 
-```
-
-## Конечные точки
-```python
-from fastapi import FastAPI, Depends, HTTPException
+</code></pre>
+<h2 id="_2">Конечные точки</h2>
+<pre><code class="language-python">from fastapi import FastAPI, Depends, HTTPException
 import models
 from sqlmodel import Session, select
 from db import init_db, get_session_depends
@@ -121,7 +232,7 @@ class Tags(Enum):
     category = 'category'
     task = 'task'
 
-@app.on_event("startup")
+@app.on_event(&quot;startup&quot;)
 def on_startup():
     init_db()
 
@@ -131,7 +242,7 @@ def on_startup():
 @app.post('/token/', status_code=200, tags=[Tags.user])
 def create_api_token(
         user_login: models.UserLogin
-) -> tp.TypedDict('token_response', {'access_token': str, 'token_type': str}):
+) -&gt; tp.TypedDict('token_response', {'access_token': str, 'token_type': str}):
     try:
         user_db = db_queries.get_user_by_username(user_login.username)
     except ValueError:
@@ -151,7 +262,7 @@ def create_api_token(
 def get_user_by_id(
         user_id: int,
         session: Session = Depends(get_session_depends)
-) -> models.UserGet:
+) -&gt; models.UserGet:
     user = session.get(models.User, user_id)
     if user is None:
         raise HTTPException(
@@ -165,14 +276,14 @@ def get_user_by_id(
 @app.get('/user/', status_code=200, tags=[Tags.user])
 def get_current_user(
         user_db:models.User = Depends(auth.get_current_user)
-) -> models.UserGet:
+) -&gt; models.UserGet:
     user_get = models.UserGet.model_validate(user_db)
     return user_get
 
 @app.get('/user/list/', status_code=200, tags=[Tags.user])
 def get_list_of_users(
     session: Session = Depends(get_session_depends)
-)-> tp.List[models.UserGet]:
+)-&gt; tp.List[models.UserGet]:
     query = select(models.User)
     user_db_list = session.exec(query).all()
     user_get_list = [
@@ -185,13 +296,13 @@ def get_list_of_users(
 def create_user(
         user: models.UserRegister,
         session:Session=Depends(get_session_depends)
-)-> tp.TypedDict('Created message', {'msg': str}):
+)-&gt; tp.TypedDict('Created message', {'msg': str}):
     hashed_password = auth.get_password_hash(user.password)
     user_data = user.dict()
     user_data['hashed_password'] = hashed_password
     user = models.User.model_validate(user_data)
     tools.add_object_to_db_and_refresh(session, user)
-    return {'msg': "Created"}
+    return {'msg': &quot;Created&quot;}
 
 
 @app.put('/user/password/', status_code=201, tags=[Tags.user])
@@ -199,7 +310,7 @@ def change_user_password(
         user_password: models.UserChangePassword,
         user_db: models.User = Depends(auth.get_current_user),
         session: Session = Depends(get_session_depends)
-) -> tp.TypedDict('password_put_response', {'msg': str}):
+) -&gt; tp.TypedDict('password_put_response', {'msg': str}):
     is_password_correct = auth.verify_password(user_password.current_password, user_db.hashed_password)
     if not is_password_correct:
         raise HTTPException(status_code=400, detail='Incorrect current password')
@@ -223,7 +334,7 @@ def get_project_info(
         project_id: int,
         user_db: models.User = Depends(auth.get_current_user),
         session: Session = Depends(get_session_depends)
-) -> models.ProjectBase:
+) -&gt; models.ProjectBase:
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project_validator.is_in_project_or_exception()
     project = project_validator.object
@@ -247,7 +358,7 @@ def create_project(
         project: models.ProjectBase,
         user_db: models.User = Depends(auth.get_current_user),
         session: Session = Depends(get_session_depends)
-) -> tp.TypedDict('post_project', {'msg': str}):
+) -&gt; tp.TypedDict('post_project', {'msg': str}):
     project = models.Project.model_validate(project)
     tools.add_object_to_db_and_refresh(session, project)
     # add creator as project admin
@@ -265,7 +376,7 @@ def get_list_of_users_in_project(
         project_id: int,
         user_db: models.User = Depends(auth.get_current_user),
         session: Session = Depends(get_session_depends)
-) -> tp.List[models.UserGet]:
+) -&gt; tp.List[models.UserGet]:
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project_validator.is_in_project_or_exception()
     project = project_validator.object
@@ -280,7 +391,7 @@ def add_user_to_project(
         user_in_project: models.UserInProjectForm,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> tp.TypedDict('add_to_project', {'msg': str}):
+) -&gt; tp.TypedDict('add_to_project', {'msg': str}):
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project_validator.is_admin_or_exception()
     data_for_link = user_in_project.dict()
@@ -295,7 +406,7 @@ def get_project_categories(
         project_id: int,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> tp.List[models.Category]:
+) -&gt; tp.List[models.Category]:
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project_validator.is_in_project_or_exception()
     project = project_validator.object
@@ -308,7 +419,7 @@ def add_category_to_project(
         category: models.CategoryBase,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> tp.TypedDict('add_category', {'msg': str, 'object': models.Category}):
+) -&gt; tp.TypedDict('add_category', {'msg': str, 'object': models.Category}):
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project_validator.is_admin_or_exception()
     category = category.dict()
@@ -323,7 +434,7 @@ def get_project_tasks(
         project_id: int,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> tp.List[models.CategoryWithBaseTasks]:
+) -&gt; tp.List[models.CategoryWithBaseTasks]:
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project_validator.is_in_project_or_exception()
     project = project_validator.object
@@ -335,7 +446,7 @@ def get_project_calendar_entries(
     project_id: int,
     session: Session = Depends(get_session_depends),
     user_db: models.User = Depends(auth.get_current_user)
-) -> models.ProjectWithCalendarEntries:
+) -&gt; models.ProjectWithCalendarEntries:
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project = project_validator.object
     project_validator.is_in_project_or_exception()
@@ -361,7 +472,7 @@ def get_category_info(
     category_id: int,
     session: Session = Depends(get_session_depends),
     user_db: models.User = Depends(auth.get_current_user)
-) -> models.CategoryBase:
+) -&gt; models.CategoryBase:
     category_validator = tools.CategoryValidator(session, user_db.id, category_id)
     category = category_validator.object
     category_validator.is_in_project_or_exception()
@@ -389,7 +500,7 @@ def add_task_to_category(
         task: models.TaskBase,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> tp.TypedDict('task added', {'msg': str, 'obj': models.Task}):
+) -&gt; tp.TypedDict('task added', {'msg': str, 'obj': models.Task}):
     category_validator = tools.CategoryValidator(session, user_db.id, category_id)
     category_validator.is_admin_or_exception()
 
@@ -405,7 +516,7 @@ def get_category_calendar_entries(
         category_id: int,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> models.CategoryWithEntries:
+) -&gt; models.CategoryWithEntries:
     category_validator = tools.CategoryValidator(session, user_db.id, category_id)
     category_validator.is_in_project_or_exception()
     category = category_validator.object
@@ -427,7 +538,7 @@ def get_task_info(
         task_id: int,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> models.TaskBase:
+) -&gt; models.TaskBase:
     task_validator = tools.TaskValidator(session, user_db.id, task_id)
     task = task_validator.object
     task_validator.is_in_project_or_exception()
@@ -441,7 +552,7 @@ def add_calendar_entry_to_task(
         calendar_entry: models.CalendarEntryBase,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> tp.TypedDict('task added', {'msg': str, 'obj': models.CalendarEntry}):
+) -&gt; tp.TypedDict('task added', {'msg': str, 'obj': models.CalendarEntry}):
     task_validator = tools.TaskValidator(session, user_db.id, task_id)
     task_validator.is_admin_or_exception()
     calendar_entry_data = calendar_entry.dict()
@@ -456,10 +567,58 @@ def get_task_calendar_entries(
         task_id: int,
         session: Session = Depends(get_session_depends),
         user_db: models.User = Depends(auth.get_current_user)
-) -> models.TaskWithEntries:
+) -&gt; models.TaskWithEntries:
     task_validator = tools.TaskValidator(session, user_db.id, task_id)
     task = task_validator.object
     task_validator.is_in_project_or_exception()
     task_with_entries = models.TaskWithEntries.model_validate(task)
     return task_with_entries
-```
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../db/" class="btn btn-neutral float-left" title="Соединение с БД"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../auth/" class="btn btn-neutral float-right" title="Аутентификация">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../db/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../auth/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
