@@ -9,8 +9,10 @@
       
       
       
+        <link rel="prev" href="../../lab2/task2_conclusion/">
       
-        <link rel="next" href="../practice/">
+      
+        <link rel="next" href="../implementation/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -18,7 +20,7 @@
     
     
       
-        <title>backend для планера задач на fastAPI - Kozlov-docs</title>
+        <title>Разбиение на сервисы и контейнеризация приложения на FastAPI - Kozlov-docs</title>
       
     
     
@@ -60,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#backend-fastapi" class="md-skip">
+        <a href="#fastapi" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              backend для планера задач на fastAPI
+              Разбиение на сервисы и контейнеризация приложения на FastAPI
             
           </span>
         </div>
@@ -186,19 +188,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
         
           
           <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
@@ -212,7 +212,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
             Лабораторная работа 1
@@ -223,30 +223,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    backend для планера задач на fastAPI
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../lab1/main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -255,62 +235,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Технологии
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      Задача
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Реализация
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      Результат
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -358,7 +282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../practice/" class="md-nav__link">
+      <a href="../../lab1/practice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -379,7 +303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/" class="md-nav__link">
+      <a href="../../lab1/models/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -400,7 +324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../db/" class="md-nav__link">
+      <a href="../../lab1/db/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -421,7 +345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../endpoints/" class="md-nav__link">
+      <a href="../../lab1/endpoints/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -442,7 +366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../auth/" class="md-nav__link">
+      <a href="../../lab1/auth/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -750,17 +674,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -774,7 +700,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Лабораторная работа 3.
@@ -785,10 +711,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../lab3/main/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Разбиение на сервисы и контейнеризация приложения на FastAPI
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -797,6 +743,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цель проекта
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мироксервисы приложения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -809,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../lab3/implementation/" class="md-nav__link">
+      <a href="../implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -859,7 +852,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Технологии
+      Цель проекта
     </span>
   </a>
   
@@ -868,7 +861,7 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Задача
+      Мироксервисы приложения
     </span>
   </a>
   
@@ -878,15 +871,6 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       Реализация
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      Результат
     </span>
   </a>
   
@@ -907,55 +891,29 @@
                   
 
 
-<h1 id="backend-fastapi">backend для планера задач на fastAPI</h1>
-<p><a href="https://github.com/VsevolodKozlov-git/ITMO_ICT_WebDevelopment_tools_2023-2024/tree/lab1/task1/LaboratoryPart">Ссылка на github</a></p>
-<h2 id="_1">Технологии</h2>
+<h1 id="fastapi">Разбиение на сервисы и контейнеризация приложения на FastAPI</h1>
+<h2 id="_1">Цель проекта</h2>
+<p>На данный момент у нас реализовано:</p>
 <ul>
-<li>FastAPI - backend framework</li>
-<li>SQLModel - ORM</li>
-<li>Alembic - система миграций</li>
-<li>PostgreSQL - SQL база данных</li>
-<li>jose - для работы с JWT токенами</li>
-<li>passlib - для алгоритмов шифрования</li>
+<li>Backend для планировщика задач на FastAPI</li>
+<li>База данных на PostgreSQL</li>
+<li>Асинхронный парсер данных с notion</li>
 </ul>
-<h2 id="_2">Задача</h2>
-<p>Реализовать планер с со следующи функционалом:</p>
+<p>Проблема в том, что у нас нет взаимодействия между парсером и backend-ом планировщика задач.
+Цель контейниризовать все приложения и настроить между ними взаимодействие при помощи
+<code>docker compose</code></p>
+<p>Также дополнительно будет реализован планировщик задача на <code>celery</code> и <code>redis</code>, ибо 
+задача парсинга выполняется долго</p>
+<h2 id="_2">Мироксервисы приложения</h2>
 <ul>
-<li>Создание проектов</li>
-<li>Добавление пользователей с разными правами:<ul>
-<li>Читатель</li>
-<li>Редактор</li>
-</ul>
-</li>
-<li>Изменение проектов</li>
-<li>Добавление категорий в проекты</li>
-<li>Добавление задач в категории</li>
-<li>Добавление сроков и срочности для задач</li>
-<li>Добавление в календарь промежутка выполнения для задачи(дата,  время начала, время конца)</li>
-<li>Подсчет времени, потраченного на задачу, из записей в календаре</li>
-<li>Вывод данных о предстоящих дедлайнах</li>
+<li>БД на PostgreSQL</li>
+<li>FastAPI приложение для планировщика задача</li>
+<li>FastAPI приложение для парсера</li>
+<li>Redis для хранения очереди задач</li>
+<li>Celery для обработки задач</li>
 </ul>
 <h2 id="_3">Реализация</h2>
-<p><a href="https://github.com/VsevolodKozlov-git/ITMO_ICT_WebDevelopment_tools_2023-2024/tree/lab1/task1/LaboratoryPart">Ссылка на github</a></p>
-<h2 id="_4">Результат</h2>
-<ul>
-<li>Схема БД со следующей архитектурой</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;"><img alt="" src="../static/db.png" /></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">Архитектура БД</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>22 входные точки. Входные точки можно посмотреть <a href="https://github.com/VsevolodKozlov-git/ITMO_ICT_WebDevelopment_tools_2023-2024/blob/lab1/task1/LaboratoryPart/endpoints/endpoints.py">здесь</a></li>
-</ul>
+<p>Реализацию можно посмотреть по ссылке: <a href="https://github.com/VsevolodKozlov-git/ITMO_ICT_WebDevelopment_tools_2023-2024/tree/lab-3/task3">github</a>. Или же в разаделе <a href="../implementation/">"реализация"</a></p>
 
 
 
