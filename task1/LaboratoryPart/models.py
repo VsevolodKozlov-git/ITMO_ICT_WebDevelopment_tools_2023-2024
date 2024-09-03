@@ -26,10 +26,11 @@ class Priority(Enum):
 
 
 class ProjectUserLink(SQLModel, table=True):
-    """Модель БД, которая связывает project и user"""
     id: int = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key='user.id')
+    user: 'User' = Relationship()
     project_id: int = Field(foreign_key='project.id')
+    project: 'Project' = Relationship()
     role: Role
 
 
