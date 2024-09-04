@@ -183,9 +183,14 @@ def add_user_to_project(
 ) -> tp.TypedDict("add_to_project", {"msg": str}):
     project_validator = tools.ProjectValidator(session, user_db.id, project_id)
     project_validator.is_admin_or_exception()
-    data_for_link = user_in_project.dict()
+    if not (session.get(models.User, user_in_project.user_id)):
+        raise HTTPException(
+            status_code=404,
+            detail=f"User with id={user_in_project.user_id} is not found",
+        )
+    data_for_link = user_in_project.model_dump()
     data_for_link["project_id"] = project_id
-    link = models.ProjectUserLink.validate(data_for_link)
+    link = models.ProjectUserLink.model_validate(data_for_link)
     tools.add_object_to_db_and_refresh(session, link)
     return {"msg": "Created"}
 
