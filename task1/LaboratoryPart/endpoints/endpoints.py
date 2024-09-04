@@ -188,6 +188,23 @@ def add_user_to_project(
             status_code=404,
             detail=f"User with id={user_in_project.user_id} is not found",
         )
+
+    query = (
+        select(models.ProjectUserLink)
+        .where(
+            models.ProjectUserLink.project_id == project_id,
+        )
+        .where(
+            models.ProjectUserLink.user_id == user_in_project.user_id,
+        )
+    )
+    user_in_project_link = session.exec(query).first()
+
+    if user_in_project_link:
+        raise HTTPException(
+            status_code=400,
+            detail="User is already a member of the project",
+        )
     data_for_link = user_in_project.model_dump()
     data_for_link["project_id"] = project_id
     link = models.ProjectUserLink.model_validate(data_for_link)
