@@ -1,4 +1,4 @@
-from sqlmodel import SQLModel,Field, select, Relationship
+from sqlmodel import SQLModel, Field, select, Relationship
 import pydantic
 from db import get_session_func
 from enum import Enum
@@ -14,8 +14,8 @@ def is_in_table(model: Type[SQLModel], field, unique_value):
 
 
 class Role(Enum):
-    admin = 'admin'
-    viewer = 'viewer'
+    admin = "admin"
+    viewer = "viewer"
 
 
 class Priority(Enum):
@@ -24,18 +24,18 @@ class Priority(Enum):
     high = 2
 
 
-
 class ProjectUserLink(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
-    user_id: int = Field(foreign_key='user.id')
-    user: 'User' = Relationship()
-    project_id: int = Field(foreign_key='project.id')
-    project: 'Project' = Relationship()
+    user_id: int = Field(foreign_key="user.id")
+    user: "User" = Relationship()
+    project_id: int = Field(foreign_key="project.id")
+    project: "Project" = Relationship()
     role: Role
 
 
 class UserInProjectForm(SQLModel):
     """Модель, чтобы передать её в создание пользователя"""
+
     user_id: int
     role: Role
 
@@ -44,29 +44,32 @@ class UserSuperBase(SQLModel):
     username: str = Field(unique=True)
     email: str
 
-    @pydantic.field_validator('email')
+    @pydantic.field_validator("email")
     @classmethod
     def validate_email(cls, value: str) -> str:
         pydantic.EmailStr._validate(value)
         return value
 
-    @pydantic.field_validator('username')
+    @pydantic.field_validator("username")
     @classmethod
     def validate_username(cls, value: str) -> str:
         if is_in_table(User, User.username, value):
-            raise ValueError('username is not unique')
+            raise ValueError("username is not unique")
         return value
 
 
 class UserBase(UserSuperBase):
     hashed_password: str
 
+
 class UserRegister(UserSuperBase):
     password: str
+
 
 class UserLogin(SQLModel):
     username: str
     password: str
+
 
 class UserGet(SQLModel):
     username: str
@@ -81,7 +84,9 @@ class UserChangePassword(SQLModel):
 
 class User(UserBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    projects: List['Project'] = Relationship(back_populates='users', link_model=ProjectUserLink)
+    projects: List["Project"] = Relationship(
+        back_populates="users", link_model=ProjectUserLink
+    )
 
 
 class ProjectBase(SQLModel):
@@ -91,12 +96,14 @@ class ProjectBase(SQLModel):
 
 class Project(ProjectBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    users: List[User] = Relationship(back_populates='projects', link_model=ProjectUserLink)
-    categories: List['Category'] = Relationship(back_populates='project')
+    users: List[User] = Relationship(
+        back_populates="projects", link_model=ProjectUserLink
+    )
+    categories: List["Category"] = Relationship(back_populates="project")
 
 
 class ProjectWithCalendarEntries(ProjectBase):
-    categories: List['CategoryWithEntries']
+    categories: List["CategoryWithEntries"]
 
 
 class CategoryBase(SQLModel):
@@ -107,18 +114,18 @@ class CategoryBase(SQLModel):
 class Category(CategoryBase, table=True):
     id: int = Field(default=None, primary_key=True)
     # отвечает за реальное поле в таблице
-    project_id: int = Field(foreign_key='project.id')
+    project_id: int = Field(foreign_key="project.id")
     # отвечает за category.project и project.categories
-    project: Project = Relationship(back_populates='categories')
-    tasks: List['Task'] = Relationship(back_populates='category')
+    project: Project = Relationship(back_populates="categories")
+    tasks: List["Task"] = Relationship(back_populates="category")
 
 
 class CategoryWithBaseTasks(CategoryBase):
-    tasks: List['TaskBase']
+    tasks: List["TaskBase"]
 
 
 class CategoryWithEntries(CategoryBase):
-    tasks: List['TaskWithEntries']
+    tasks: List["TaskWithEntries"]
 
 
 class TaskBase(SQLModel):
@@ -131,14 +138,13 @@ class TaskBase(SQLModel):
 
 class Task(TaskBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    category_id: int = Field(foreign_key='category.id')
-    category: Category = Relationship(back_populates='tasks')
-    calendar_entries: List['CalendarEntry'] = Relationship(back_populates='task')
+    category_id: int = Field(foreign_key="category.id")
+    category: Category = Relationship(back_populates="tasks")
+    calendar_entries: List["CalendarEntry"] = Relationship(back_populates="task")
 
 
 class TaskGet(TaskBase):
     Category: Category
-
 
 
 class CalendarEntryBase(SQLModel):
@@ -148,8 +154,8 @@ class CalendarEntryBase(SQLModel):
 
 class CalendarEntry(CalendarEntryBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    task_id: int = Field(foreign_key='task.id')
-    task: Task = Relationship(back_populates='calendar_entries')
+    task_id: int = Field(foreign_key="task.id")
+    task: Task = Relationship(back_populates="calendar_entries")
 
 
 class CalendarEntryWithId(CalendarEntryBase):
@@ -158,4 +164,3 @@ class CalendarEntryWithId(CalendarEntryBase):
 
 class TaskWithEntries(TaskBase):
     calendar_entries: List[CalendarEntryWithId]
-

@@ -138,7 +138,6 @@ def get_user_project_list(
     session: Session = Depends(get_session_depends),
 ):
     statement = select(models.ProjectUserLink).where(
-        hello
         models.ProjectUserLink.user_id == user_db.id
     )
     user_entries: tp.List[models.ProjectUserLink] = list(session.exec(statement).all())

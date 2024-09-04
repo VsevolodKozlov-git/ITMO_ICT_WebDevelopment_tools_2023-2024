@@ -4,9 +4,9 @@ from dotenv import dotenv_values
 from pathlib import Path
 from contextlib import contextmanager
 
-env_path = Path(__file__).parent / '.env'
+env_path = Path(__file__).parent / ".env"
 config = dotenv_values(env_path)
-db_url = config['DB_ADMIN']
+db_url = config["DB_ADMIN"]
 engine = create_engine(db_url)
 
 

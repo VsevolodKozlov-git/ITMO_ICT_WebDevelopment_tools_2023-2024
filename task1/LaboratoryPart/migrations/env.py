@@ -10,16 +10,16 @@ from alembic import context
 from dotenv import dotenv_values
 from pathlib import Path
 
-env_path = Path(__file__).parent.parent / '.env'
-config_env= dotenv_values(env_path)
-db_url = config_env['DB_ADMIN']
+env_path = Path(__file__).parent.parent / ".env"
+config_env = dotenv_values(env_path)
+db_url = config_env["DB_ADMIN"]
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
 config = context.config
 # Set the SQLALCHEMY_DATABASE_URL dynamically
-config.set_main_option('sqlalchemy.url', db_url)
+config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -76,9 +76,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
