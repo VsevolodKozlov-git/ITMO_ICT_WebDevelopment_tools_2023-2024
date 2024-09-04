@@ -19,7 +19,6 @@ class ProjectValidator:
         self._object_id = object_id
         self._project = self._retrieve_project()
 
-
     @property
     def object(self) -> models.Project:
         if self._object is None:
@@ -33,15 +32,16 @@ class ProjectValidator:
         project = self._session.get(models.Project, self._object_id)
         if project is None:
             raise HTTPException(
-                status_code=404,
-                detail=f'Project with id={self.object.id} is not found'
+                status_code=404, detail=f"Project with id={self.object.id} is not found"
             )
         return project
 
     def is_admin_or_exception(self):
-        statement = select(models.ProjectUserLink) \
-            .where(models.ProjectUserLink.user_id == self._user_id) \
+        statement = (
+            select(models.ProjectUserLink)
+            .where(models.ProjectUserLink.user_id == self._user_id)
             .where(models.ProjectUserLink.project_id == self._project.id)
+        )
         user_entries: tp.List[models.ProjectUserLink] = list(
             self._session.exec(statement).all()
         )
@@ -50,23 +50,26 @@ class ProjectValidator:
                 return
         raise HTTPException(
             status_code=403,
-            detail=f'you\'re not admin of project with id={self._project.id}'
+            detail=f"you're not admin of project with id={self._project.id}",
         )
 
     def is_in_project_or_exception(self):
-        statement = select(models.ProjectUserLink) \
-            .where(models.ProjectUserLink.user_id == self._user_id) \
+        statement = (
+            select(models.ProjectUserLink)
+            .where(models.ProjectUserLink.user_id == self._user_id)
             .where(models.ProjectUserLink.user_id == self._project.id)
-        user_entries: tp.List[models.ProjectUserLink] = list(self._session.exec(statement).all())
+        )
+        user_entries: tp.List[models.ProjectUserLink] = list(
+            self._session.exec(statement).all()
+        )
         if len(user_entries) == 0:
             raise HTTPException(
                 status_code=403,
-                detail=f'You\'re not allowed to view project with id={self._project.id}'
+                detail=f"You're not allowed to view project with id={self._project.id}",
             )
 
 
 class CategoryValidator(ProjectValidator):
-
     def _retrieve_project(self) -> models.Project:
         return self.object.project
 
@@ -75,7 +78,7 @@ class CategoryValidator(ProjectValidator):
         if category is None:
             raise HTTPException(
                 status_code=404,
-                detail=f'Category with id={self._object_id} is not found'
+                detail=f"Category with id={self._object_id} is not found",
             )
         return category
 
@@ -88,8 +91,7 @@ class TaskValidator(CategoryValidator):
         task = self._session.get(models.Task, self._object_id)
         if task is None:
             raise HTTPException(
-                status_code=404,
-                detail=f'Task with id={self._object_id} is not found'
+                status_code=404, detail=f"Task with id={self._object_id} is not found"
             )
         return task
 
@@ -108,11 +110,11 @@ class TaskValidator(CategoryValidator):
 #         self._object_id = object_id
 #         self._project = self._retrieve_project(object_id)
 #
-    # @property
-    # def object(self):
-    #     if self._object is None:
-    #         self._object = self._retrieve_object_or_exception()
-    #     return self._object
+# @property
+# def object(self):
+#     if self._object is None:
+#         self._object = self._retrieve_object_or_exception()
+#     return self._object
 #
 #
 #     def _retrieve_project(self) -> models.Project:
