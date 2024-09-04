@@ -32,7 +32,8 @@ class ProjectValidator:
         project = self._session.get(models.Project, self._object_id)
         if project is None:
             raise HTTPException(
-                status_code=404, detail=f"Project with id={self.object.id} is not found"
+                status_code=404,
+                detail=f"Project with id={self._object_id} is not found",
             )
         return project
 
@@ -57,7 +58,7 @@ class ProjectValidator:
         statement = (
             select(models.ProjectUserLink)
             .where(models.ProjectUserLink.user_id == self._user_id)
-            .where(models.ProjectUserLink.user_id == self._project.id)
+            .where(models.ProjectUserLink.project_id == self._project.id)
         )
         user_entries: tp.List[models.ProjectUserLink] = list(
             self._session.exec(statement).all()
