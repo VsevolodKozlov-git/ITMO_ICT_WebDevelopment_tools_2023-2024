@@ -21,6 +21,9 @@ headers = {
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM0NTQ4NzUsImlhdCI6MTcxNTQ1NDg3NSwic3ViIjoidXNlcjEifQ.u4I3i-utbj3gwwlLc9ABIfvKneg-Ri3VzZVkmoNh-Wc"
 }
 
+# headers = {
+#     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM0NTQ4NzUsImlhdCI6MTcxNTQ1NDg3NSwic3ViIjoidXNlcjEifQ.u4I3i-utbj3gwwlLc9ABIfvKneg-Ri3VzZVkmoNh-"
+# }
 
 notion = AsyncClient(auth=notion_secret)
 
@@ -44,62 +47,44 @@ async def get_task_pages(db_id: str):
 
     return page_ids
 
+
 class TaskParser:
     def __init__(self, task_notion: dict) -> None:
         self.task_notion = task_notion
-    
-    
+
     def get_title(self) -> str | None:
-        title_list = self.get_value_or_none(
-            self.task_notion,
-            ["Name", "title"]
-        )
+        title_list = self.get_value_or_none(self.task_notion, ["Name", "title"])
         if len(title_list) == 0:
             return None
         title_object = title_list[0]
-        title = self.get_value_or_none(
-            title_object,
-            ['plain_text']
-        )
+        title = self.get_value_or_none(title_object, ["plain_text"])
         return title
-    
-    
+
     def get_category_title(self) -> str | None:
-        title = self.get_value_or_none(
-            self.task_notion, 
-            ("Tasks", "select", "name")
-        )
+        title = self.get_value_or_none(self.task_notion, ("Tasks", "select", "name"))
         return title
-        
+
     def get_description(self) -> str | None:
         return None
-    
+
     def get_deadline(self) -> str | None:
-        deadline = self.get_value_or_none(
-            self.task_notion, 
-            ("due", "date", "start")
-        )
+        deadline = self.get_value_or_none(self.task_notion, ("due", "date", "start"))
         return deadline
-        
-    
+
     def get_priority(self) -> models.Priority | None:
-        urgent_flag = self.get_value_or_none(
-            self.task_notion,
-            ['Urgent', 'checkbox']
-        )
+        urgent_flag = self.get_value_or_none(self.task_notion, ["Urgent", "checkbox"])
         if urgent_flag:
             return models.Priority.high
         return models.Priority.low
-    
+
     def get_approximate_time(self) -> int | None:
         approximate_time = self.get_value_or_none(
-            self.task_notion,
-            ["Aproximate time", 'number']
+            self.task_notion, ["Aproximate time", "number"]
         )
         if approximate_time is not None:
             approximate_time = int(approximate_time)
         return approximate_time
-    
+
     @staticmethod
     def get_value_or_none(d, keys_tuple):
         for key in keys_tuple:
@@ -107,11 +92,12 @@ class TaskParser:
                 return None
             if key not in keys_tuple:
                 return None
-            
+
             d = d[key]
         return d
 
-class TaskWriter: 
+
+class TaskWriter:
     def __init__(self, project_id, category_none_id) -> None:
         self.project_id = project_id
         self.category_none_id = category_none_id
@@ -126,7 +112,7 @@ class TaskWriter:
 
         async with get_session_context() as session:
             category_id = await self._get_category_id(session, task_notion)
-            
+
             task_data = {
                 "category_id": category_id,  # Будем заполнять ниже
                 "title": task_notion.get_title(),
@@ -139,7 +125,6 @@ class TaskWriter:
             session.add(task_object)
             await session.commit()
             await session.refresh(task_object)
-
 
     async def _get_category_id(self, session, task_notion: TaskParser):
         category_title = task_notion.get_category_title()
@@ -162,8 +147,6 @@ class TaskWriter:
             print(category_obj)
             raise e
         return category_id
-
-   
 
     async def _find_category_obj(self, session, category_title):
         query = (
@@ -189,6 +172,7 @@ class TaskWriter:
         await session.refresh(category_obj)
         return category_obj
 
+
 async def create_project():
     url = "http://127.0.0.1:13213/project/"
     json_data = {
@@ -212,8 +196,24 @@ async def create_none_category(project_id):
     return category_id
 
 
+async def check_headers():
+    url = "http://127.0.0.1:13213/user/"
+    response = requests.get(url, headers=headers)
+    if response.status_code == 403:
+        return response.json()["detail"]
+    if response.status_code != 200:
+        return f"Headers are incorrect, response ended with status: {response.status_code}\nresponse data:{response.json()}"
+
+
 async def main():
     logger.info("Начал выполнение")
+    error_msg = await check_headers()
+    if error_msg:
+        print(
+            "Измените headers, потому что проверяющий запрос завершился со следующей ошибкой"
+        )
+        print(error_msg)
+        return
     project_id = await create_project()
     category_none_id = await create_none_category(project_id)
     logger.info("Создал проект и none task")
@@ -225,7 +225,6 @@ async def main():
             coroutine = task_writer.write_task_to_db(task_id)
             task_group.create_task(coroutine)
     logger.info("Собрал все данные и записал их в БД")
-
 
 
 if __name__ == "__main__":
