@@ -16,7 +16,7 @@ exercise2_path = Path(__file__).parent.parent
 env_path = exercise2_path / ".env"
 config = dotenv_values(env_path)
 notion_secret = config["notion_secret"]
-db_id = "7401d3f130414235ab1abb429d41a31e"
+db_id = "a3252df0eda7498bbdc99a7013afe4a4"
 headers = {
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM0NTQ4NzUsImlhdCI6MTcxNTQ1NDg3NSwic3ViIjoidXNlcjEifQ.u4I3i-utbj3gwwlLc9ABIfvKneg-Ri3VzZVkmoNh-Wc"
 }
