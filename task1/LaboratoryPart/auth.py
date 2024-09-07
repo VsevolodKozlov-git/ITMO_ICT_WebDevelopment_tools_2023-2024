@@ -15,7 +15,7 @@ config = dotenv_values(env_path)
 # jwt setup
 SECRET_KEY = config["JWT_SECRET_KEY"]
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_SECONDS = 30
+ACCESS_TOKEN_EXPIRE_SECONDS = 3600 * 3
 # hasher setup
 crypto_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # auth scheme setup
