@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 from jose import jwt
-from jose.exceptions import JWTError
+from jose.exceptions import ExpiredSignatureError, JWTError
 from pathlib import Path
 from dotenv import dotenv_values
 import datetime
@@ -16,7 +16,7 @@ config = dotenv_values(env_path)
 # jwt setup
 SECRET_KEY = config["JWT_SECRET_KEY"]
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 800000
+ACCESS_TOKEN_EXPIRE_SECONDS = 30
 # hasher setup
 crypto_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # auth scheme setup
@@ -32,10 +32,11 @@ def get_password_hash(password):
 
 
 def generate_token(username):
+    creation_utc_timestamp = datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
+    expiration_utc_timestamp = creation_utc_timestamp + ACCESS_TOKEN_EXPIRE_SECONDS
     to_encode = {
-        "exp": datetime.datetime.now()
-        + datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
-        "iat": datetime.datetime.now(),
+        "iat": creation_utc_timestamp,
+        "exp": expiration_utc_timestamp,
         "sub": username,
     }
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -44,14 +45,13 @@ def generate_token(username):
 def decode_token(token):
     try:
         decoded_token = jwt.decode(token, SECRET_KEY, ALGORITHM)
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status_code=403, detail="Your token expired. Create a new one"
+        )
     except JWTError:
         raise HTTPException(status_code=403, detail="Invalid token. Invalid format")
     return decoded_token
-
-
-"""
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk5MTUxMTcsImlhdCI6MTcxMTkxNTExNywic3ViIjoidXNlcjEifQ.CdzMds38zLe9hw3EBuwxAGUT2FvoRbdTDVSE-tnW0aQ
-"""
 
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
