@@ -28,6 +28,9 @@ headers = {
 notion = AsyncClient(auth=notion_secret)
 
 
+tasks = []
+
+
 async def get_task_pages(db_id: str):
     """Получает все id страниц, которые находятся в БД
 
@@ -109,6 +112,18 @@ class TaskWriter:
 
         if task_notion.get_title() is None:
             return
+
+        task_data = {
+            "task_id": task_notion_id,
+            "category_title": task_notion.get_category_title(),  # Будем заполнять ниже
+            "title": task_notion.get_title(),
+            "description": None,
+            "deadline": task_notion.get_deadline(),
+            "priority": task_notion.get_priority(),
+            "approximate_time": task_notion.get_approximate_time(),
+        }
+
+        tasks.append(task_data)
 
         async with get_session_context() as session:
             category_id = await self._get_category_id(session, task_notion)
@@ -218,6 +233,8 @@ async def main():
     category_none_id = await create_none_category(project_id)
     logger.info("Создал проект и none task")
     task_pages = await get_task_pages(db_id)
+    print("------------")
+    print(task_pages)
     logger.info("Получил id страниц тасков")
     task_writer = TaskWriter(project_id, category_none_id)
     async with asyncio.TaskGroup() as task_group:
@@ -225,6 +242,8 @@ async def main():
             coroutine = task_writer.write_task_to_db(task_id)
             task_group.create_task(coroutine)
     logger.info("Собрал все данные и записал их в БД")
+    print("---------------")
+    print(tasks)
 
 
 if __name__ == "__main__":
