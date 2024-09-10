@@ -16,7 +16,7 @@ exercise2_path = Path(__file__).parent.parent
 env_path = exercise2_path / ".env"
 config = dotenv_values(env_path)
 notion_secret = config["notion_secret"]
-db_id = "7401d3f130414235ab1abb429d41a31e"
+db_id = "a3252df0eda7498bbdc99a7013afe4a4"
 headers = {
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM0NTQ4NzUsImlhdCI6MTcxNTQ1NDg3NSwic3ViIjoidXNlcjEifQ.u4I3i-utbj3gwwlLc9ABIfvKneg-Ri3VzZVkmoNh-Wc"
 }
@@ -101,7 +101,7 @@ def handle_tasks_in_process(task_ids, task_writer):
         task_writer.write_task_to_db(task_id)
 
 
-def handle_tasks_with_threading(task_ids, task_writer, n_threads):
+def handle_tasks_with_multiprocessing(task_ids, task_writer, n_threads):
     start = 0
     end = len(task_ids)
     step = int(math.ceil((end - start) / n_threads))
@@ -136,7 +136,7 @@ def main():
 
     category_manager = CategoryManager(project_id, category_none_id)
     task_writer = TaskWriter(category_manager)
-    handle_tasks_with_threading(task_ids, task_writer, 4)
+    handle_tasks_with_multiprocessing(task_ids, task_writer, 4)
 
     logger.info("Собрал все данные и записал их в БД")
 
