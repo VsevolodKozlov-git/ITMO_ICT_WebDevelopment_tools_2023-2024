@@ -1,5 +1,6 @@
 from passlib.context import CryptContext
-import jwt
+from jose import jwt
+from jose.exceptions import ExpiredSignatureError, JWTError
 from pathlib import Path
 from dotenv import dotenv_values
 import datetime
@@ -44,11 +45,11 @@ def generate_token(username):
 def decode_token(token):
     try:
         decoded_token = jwt.decode(token, SECRET_KEY, ALGORITHM)
-    except jwt.exceptions.ExpiredSignatureError:
+    except ExpiredSignatureError:
         raise HTTPException(
             status_code=403, detail="Your token expired. Create a new one"
         )
-    except jwt.exceptions.InvalidTokenError:
+    except JWTError:
         raise HTTPException(status_code=403, detail="Invalid token. Invalid format")
     return decoded_token
 
